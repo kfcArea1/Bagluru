@@ -79,10 +79,6 @@
         .send-button:hover {
             background-color: #1ebd53;
         }
-        .sent {
-            background-color: #6c757d !important; /* Gray color for sent button */
-            cursor: default;
-        }
         .strikethrough {
             text-decoration: line-through;
         }
@@ -128,7 +124,7 @@
 
 <script>
     function generateLinks() {
-        const storeID = "91KDIPL731-01"; // Updated Store ID
+        const storeID = "91KDIPL731-01";
         let orderID = parseInt(document.getElementById('order-id').value);
         const date = document.getElementById('date').value;
         const initialTime = document.getElementById('time').value;
@@ -143,7 +139,7 @@
         }
 
         let linksHtml = "";
-        let time = new Date(${date}T${initialTime});
+        let time = new Date(`${date}T${initialTime}`);
 
         for (let i = 0; i < totalLinks; i++) {
             const generatedPhoneNumber = generatePhoneNumber();
@@ -160,13 +156,13 @@
             };
 
             const encodedData = btoa(JSON.stringify(data));
-            const link = https://customer.kfc-listens.com/jfe/form/SV_8bHC0noyvM3jPWC?Q_EED=${encodedData};
+            const link = `https://customer.kfc-listens.com/jfe/form/SV_8bHC0noyvM3jPWC?Q_EED=${encodedData}`;
 
             linksHtml += `
                 <div class="link-container">
                     <span id="link-${i}">${link}</span>
                     <button class="copy-button" onclick="copyLink('${link}', 'link-${i}')">Copy</button>
-                    <button class="send-button" onclick="sendToWhatsApp('${link}', '${phoneNumber}', this)">Send</button>
+                    <button class="send-button" onclick="sendToWhatsApp('${link}', '${phoneNumber}')">Send</button>
                 </div>
             `;
 
@@ -196,15 +192,10 @@
         document.body.removeChild(tempInput);
     }
 
-    function sendToWhatsApp(link, phoneNumber, button) {
-        const message = Here's your link: ${link};
-        const whatsappUrl = https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)};
+    function sendToWhatsApp(link, phoneNumber) {
+        const message = `Here's your link: ${link}`;
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
-
-        // Change button color to indicate it was sent
-        button.classList.add('sent');
-        button.textContent = 'Sent';
-        button.disabled = true;
     }
 
     function generatePhoneNumber() {
